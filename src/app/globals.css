@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ECO LAVA JATO — tokens de cor, tirados da logo.
+   Azul-petróleo das letras = cor de ação e títulos.
+   Verde-sálvia da folha = o que está concluído/ok.
+   Creme do fundo da arte = ambiente.
+   Nenhuma cor escrita direto nas telas; só daqui.
+   ============================================================ */
+
+@theme {
+  --color-fundo: #F3F2E7;
+  --color-superficie: #FDFDF8;
+  --color-borda: #DCDAC6;
+  --color-texto: #1B2E2C;
+  --color-suave: #5B6A63;
+
+  --color-marca: #14566A;
+  --color-marca-forte: #0D3F4E;
+  --color-marca-clara: #E2EEF0;
+
+  --color-folha: #6E8E45;
+  --color-folha-forte: #4B6630;
+  --color-folha-clara: #E8EFDB;
+
+  --color-alerta: #9A6212;
+  --color-alerta-claro: #FBF0DA;
+  --color-perigo: #B03A2E;
+  --color-perigo-claro: #FBE7E3;
+
+  --font-titulo: var(--fonte-titulo), Georgia, serif;
+  --font-sans: var(--fonte-texto), system-ui, sans-serif;
+}
+
+html {
+  background: var(--color-fundo);
+  color: var(--color-texto);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-marca);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
