@@ -45,24 +45,24 @@ export function criarEstadoDemo(): Estado {
     clientes: [
       {
         id: "c-1", unidadeId: "u-lava", nome: "Cliente Exemplo Um", telefone: "(00) 90000-0001", email: "cliente1@exemplo.invalid",
-        origem: "Indicação", indicadoPor: "Cliente Exemplo Dois", estagio: "cliente",
+        origem: "Indicação", indicadoPor: "Cliente Exemplo Dois", estagio: "convertido",
         consentimento: { contatoPermitido: true, data: em(-10, 10), origem: "Balcão — autorizou contato por WhatsApp" },
         naoContatar: false, observacoes: "Prefere atendimento pela manhã.", criadoEm: em(-10, 10), demonstrativo: true,
       },
       {
         id: "c-2", unidadeId: "u-lava", nome: "Cliente Exemplo Dois", telefone: "(00) 90000-0002", email: "",
-        origem: "Passou em frente", indicadoPor: "", estagio: "cliente",
+        origem: "Passou em frente", indicadoPor: "", estagio: "agendado",
         consentimento: { contatoPermitido: false }, naoContatar: false, observacoes: "", criadoEm: em(-20, 15), demonstrativo: true,
       },
       {
         id: "c-3", unidadeId: "u-lava", nome: "Contato Exemplo Três", telefone: "(00) 90000-0003", email: "",
-        origem: "Instagram", indicadoPor: "", estagio: "lead",
+        origem: "Instagram", indicadoPor: "", estagio: "interessado",
         consentimento: { contatoPermitido: true, data: em(-2, 18), origem: "Pediu orçamento por mensagem" },
         naoContatar: false, observacoes: "Perguntou sobre higienização interna.", criadoEm: em(-2, 18), demonstrativo: true,
       },
       {
         id: "c-4", unidadeId: "u-lava", nome: "Contato Exemplo Quatro", telefone: "", email: "",
-        origem: "Evento", indicadoPor: "", estagio: "inativo",
+        origem: "Evento", indicadoPor: "", estagio: "nao_prosseguir",
         consentimento: { contatoPermitido: false }, naoContatar: true, observacoes: "Pediu para não ser contatado.", criadoEm: em(-40, 9), demonstrativo: true,
       },
     ],

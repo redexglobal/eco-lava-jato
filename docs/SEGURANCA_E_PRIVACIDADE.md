@@ -12,6 +12,7 @@
 - CSV exportado neutraliza fórmulas (`=`, `+`, `-`, `@`) para evitar ataque via planilha.
 - Exclusão de cliente remove também as interações; a auditoria registra a exclusão sem o nome.
 - Não é possível remover o último administrador nem rebaixar a si mesmo.
+- Headers de segurança (nosniff, bloqueio de iframe, HSTS, câmera/microfone/geolocalização desligados) em `next.config.ts`.
 - `.env*` ignorado pelo git; só `.env.example` sem valores.
 
 ## LGPD — o que o sistema oferece

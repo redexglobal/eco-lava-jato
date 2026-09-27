@@ -42,7 +42,8 @@ export interface Membro {
   reportaA?: string;
 }
 
-export type EstagioCliente = "lead" | "em_contato" | "cliente" | "inativo";
+/** Funil sugerido no prompt mestre; nomes podem ser ajustados pelos responsáveis. */
+export type EstagioCliente = "novo" | "contatado" | "interessado" | "agendado" | "convertido" | "nao_prosseguir";
 
 export interface Consentimento {
   contatoPermitido: boolean;

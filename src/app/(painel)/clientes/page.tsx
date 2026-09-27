@@ -6,19 +6,21 @@ import { STATUS_ORDEM } from "@/lib/regras";
 import { data, dataHora } from "@/lib/formato";
 import type { Cliente, EstagioCliente } from "@/lib/tipos";
 import { AreaTexto, Aviso, Botao, Cabecalho, Campo, Etiqueta, Filtro, Marcar, Modal, RodapeForm, Selecao, Vazio, useFormulario, useUi, type Tom } from "@/componentes/ui";
-import { useAcao, useNomes, usePermissao } from "@/componentes/hooks";
+import { useAbrirSeNovo, useAcao, useNomes, usePermissao } from "@/componentes/hooks";
 
 const ESTAGIOS: Record<EstagioCliente, { texto: string; tom: Tom }> = {
-  lead: { texto: "Lead", tom: "alerta" },
-  em_contato: { texto: "Em contato", tom: "marca" },
-  cliente: { texto: "Cliente", tom: "folha" },
-  inativo: { texto: "Inativo", tom: "neutro" },
+  novo: { texto: "Novo", tom: "alerta" },
+  contatado: { texto: "Contatado", tom: "marca" },
+  interessado: { texto: "Interessado", tom: "marca" },
+  agendado: { texto: "Agendado", tom: "folha" },
+  convertido: { texto: "Convertido", tom: "folha" },
+  nao_prosseguir: { texto: "Não prosseguir", tom: "neutro" },
 };
 
 type Form = Omit<Cliente, "id" | "criadoEm" | "demonstrativo"> & { id?: string };
 
 const vazio = (unidadeId: string): Form => ({
-  unidadeId, nome: "", telefone: "", email: "", origem: "", indicadoPor: "", estagio: "lead",
+  unidadeId, nome: "", telefone: "", email: "", origem: "", indicadoPor: "", estagio: "novo",
   consentimento: { contatoPermitido: false, origem: "" }, naoContatar: false, observacoes: "",
 });
 
@@ -92,6 +94,7 @@ export default function Clientes() {
   }
 
   const d = f.dados;
+  useAbrirSeNovo(() => abrirNovo(), editar);
   return (
     <>
       <Cabecalho

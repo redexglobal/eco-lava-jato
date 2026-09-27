@@ -5,7 +5,7 @@ import { useDados } from "@/lib/store";
 import { data, dataHora, deCampoDataHora, hojeISO, paraCampoDataHora } from "@/lib/formato";
 import type { Compromisso, Prioridade, StatusTarefa, Tarefa } from "@/lib/tipos";
 import { AreaTexto, Botao, Cabecalho, Campo, Etiqueta, Modal, Selecao, Vazio, useFormulario, useUi, type Tom } from "@/componentes/ui";
-import { useAcao, useNomes, usePermissao } from "@/componentes/hooks";
+import { useAbrirSeNovo, useAcao, useNomes, usePermissao } from "@/componentes/hooks";
 
 const STATUS: Record<StatusTarefa, string> = { a_fazer: "A fazer", fazendo: "Fazendo", feito: "Feito" };
 const PRIORIDADE: Record<Prioridade, { texto: string; tom: Tom }> = { alta: { texto: "Alta", tom: "perigo" }, media: { texto: "Média", tom: "alerta" }, baixa: { texto: "Baixa", tom: "neutro" } };
@@ -75,6 +75,7 @@ export default function Tarefas() {
     }
   }
 
+  useAbrirSeNovo(() => abrirT(), editar);
   return (
     <>
       <Cabecalho titulo="Tarefas e calendário" descricao="O que precisa ser feito, por quem e até quando — e os compromissos da unidade (reuniões, oficinas, rotinas)."

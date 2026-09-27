@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { useDados } from "@/lib/store";
 import { useUi } from "./ui";
 import { pode } from "@/lib/regras";
@@ -40,4 +41,22 @@ export function useNomes() {
     servico: (id?: string) => estado.servicos.find((s) => s.id === id)?.nome ?? "—",
     unidade: (id?: string) => estado.unidades.find((u) => u.id === id)?.nome ?? "—",
   };
+}
+
+/** Ação rápida: ao chegar na página com `?novo`, abre o formulário de criação uma vez e limpa o endereço. */
+export function useAbrirSeNovo(abrir: () => void, permitido: boolean) {
+  const feito = useRef(false);
+  const ref = useRef(abrir);
+  useEffect(() => {
+    ref.current = abrir;
+  });
+  useEffect(() => {
+    if (feito.current || !permitido) return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("novo")) return;
+    feito.current = true;
+    url.searchParams.delete("novo");
+    window.history.replaceState(null, "", url.pathname + url.search);
+    ref.current();
+  }, [permitido]);
 }

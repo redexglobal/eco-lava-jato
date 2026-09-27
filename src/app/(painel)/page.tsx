@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import { useDados } from "@/lib/store";
 import { alertasEstoque, formatarReais, pode, STATUS_ORDEM } from "@/lib/regras";
 import { diaLocal, hojeISO, hora } from "@/lib/formato";
@@ -32,19 +33,44 @@ export default function VisaoGeral() {
   const entregues7 = estado.ordens.filter((o) => o.unidadeId === u && o.status === "entregue" && new Date(o.historico.at(-1)!.data).getTime() >= seteDias);
   const alertas = alertasEstoque(estado.itens.filter((i) => i.unidadeId === u));
   const minhas = estado.tarefas.filter((t) => t.unidadeId === u && t.responsavelId === membro.id && t.status !== "feito");
+  const aAtender = estado.clientes.filter((c) => c.unidadeId === u && !c.naoContatar && ["novo", "contatado", "interessado"].includes(c.estagio));
+  const vencidas = estado.tarefas.filter((t) => t.unidadeId === u && t.status !== "feito" && t.prazo && t.prazo < hoje);
   const pode_ = (m: Parameters<typeof pode>[1]) => pode(membro.papel, m, "ler");
+  const rapidas = ([
+    ["clientes", "/clientes", "Contato"], ["agenda", "/agenda", "Agendamento"],
+    ["operacao", "/operacao", "Ordem de serviço"], ["tarefas", "/tarefas", "Tarefa"],
+  ] as const).filter(([m]) => pode(membro.papel, m, "editar")).map(([, href, texto]) => ({ href, texto }));
 
   return (
     <>
       <Cabecalho titulo={`Olá, ${membro.nome.split(" ")[0]}`} descricao={<>Resumo de <strong>{unidade.nome}</strong>. Cada número diz como foi calculado.</>} />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {pode_("clientes") && <Indicador titulo="Contatos a atender" valor={aAtender.length} como="Contatos em 'novo', 'contatado' ou 'interessado', sem pedido de não contato." href="/clientes" />}
         {pode_("agenda") && <Indicador titulo="Agendamentos hoje" valor={agendaHoje.length} como="Agendamentos de hoje não cancelados nesta unidade." href="/agenda" />}
         {pode_("operacao") && <Indicador titulo="Ordens em aberto" valor={abertas.length} como="OS aguardando, em execução ou prontas para entrega." href="/operacao" />}
         {pode_("operacao") && <Indicador titulo="Entregues em 7 dias" valor={entregues7.length} como="OS cujo último registro foi 'entregue' nos últimos 7 dias." href="/operacao" />}
         {pode_("estoque") && <Indicador titulo="Alertas de estoque" valor={alertas.length} como="Itens no mínimo ou abaixo, ou com validade em até 30 dias." href="/estoque" />}
         {pode_("tarefas") && <Indicador titulo="Minhas tarefas abertas" valor={minhas.length} como="Tarefas desta unidade com você como responsável, não concluídas." href="/tarefas" />}
+        {pode_("tarefas") && <Indicador titulo="Tarefas vencidas" valor={vencidas.length} como="Tarefas desta unidade não concluídas com prazo antes de hoje (de todos)." href="/tarefas" />}
       </div>
+
+      {rapidas.length > 0 && (
+        <nav aria-label="Ações rápidas" className="mt-4 flex flex-wrap gap-2">
+          {rapidas.map((r) => (
+            <Link key={r.href} href={`${r.href}?novo`} className="inline-flex min-h-10 items-center gap-1 rounded-lg border border-borda bg-superficie px-3 text-sm hover:border-marca">
+              <Plus size={16} aria-hidden /> {r.texto}
+            </Link>
+          ))}
+        </nav>
+      )}
+
+      <Cartao className="mt-4">
+        <h2 className="font-medium">Indicadores ecológicos</h2>
+        <p className="mt-1 text-sm text-suave">
+          Água, produtos e resíduos: <strong>não medido</strong>. Só serão exibidos quando houver medição real e metodologia definida pelos responsáveis — o sistema não estima impacto ambiental.
+        </p>
+      </Cartao>
 
       {pode_("financeiro") && estado.config.orcamentoReferencia.mostrar && (
         <div className="mt-4">

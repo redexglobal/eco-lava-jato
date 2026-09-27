@@ -20,7 +20,7 @@ test("fluxo completo: contato → agendamento → OS → execução → entrega"
   let e: Estado & { _id?: string } = criarEstadoDemo();
   e = ok(executar(e, atend, {
     tipo: "cliente.salvar",
-    dados: { unidadeId: "u-lava", nome: "  Pessoa Teste  ", telefone: "(00) 90000-1111", email: "", origem: "Indicação", indicadoPor: "", estagio: "lead", consentimento: { contatoPermitido: true, origem: "Balcão" }, naoContatar: false, observacoes: "" },
+    dados: { unidadeId: "u-lava", nome: "  Pessoa Teste  ", telefone: "(00) 90000-1111", email: "", origem: "Indicação", indicadoPor: "", estagio: "novo", consentimento: { contatoPermitido: true, origem: "Balcão" }, naoContatar: false, observacoes: "" },
   }));
   const cliente = e.clientes.at(-1)!;
   assert.equal(cliente.nome, "Pessoa Teste");
@@ -106,7 +106,7 @@ test("pedir para não ser contatado retira o consentimento", () => {
 test("validação devolve erros por campo", () => {
   const r = executar(criarEstadoDemo(), atend, {
     tipo: "cliente.salvar",
-    dados: { unidadeId: "u-lava", nome: "", telefone: "12", email: "x@", origem: "", indicadoPor: "", estagio: "lead", consentimento: { contatoPermitido: false }, naoContatar: false, observacoes: "" },
+    dados: { unidadeId: "u-lava", nome: "", telefone: "12", email: "x@", origem: "", indicadoPor: "", estagio: "novo", consentimento: { contatoPermitido: false }, naoContatar: false, observacoes: "" },
   });
   assert.equal(r.ok, false);
   if (!r.ok) assert.deepEqual(Object.keys(r.erros ?? {}).sort(), ["email", "nome", "telefone"]);

@@ -77,7 +77,7 @@ create table if not exists clientes (
   email text not null default '',
   origem text not null default '',
   indicado_por text not null default '',
-  estagio text not null default 'lead' check (estagio in ('lead','em_contato','cliente','inativo')),
+  estagio text not null default 'novo' check (estagio in ('novo','contatado','interessado','agendado','convertido','nao_prosseguir')),
   contato_permitido boolean not null default false,
   consentimento_data date,
   consentimento_origem text,

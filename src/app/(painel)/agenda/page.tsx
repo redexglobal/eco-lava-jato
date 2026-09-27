@@ -7,7 +7,7 @@ import { sobreposicoes } from "@/lib/regras";
 import { data, deCampoDataHora, diaLocal, hora, paraCampoDataHora } from "@/lib/formato";
 import type { Agendamento, StatusAgendamento, Veiculo } from "@/lib/tipos";
 import { AreaTexto, Aviso, Botao, Cabecalho, Campo, Etiqueta, Marcar, Modal, RodapeForm, Selecao, useFormulario, useUi, type Tom } from "@/componentes/ui";
-import { useAcao, useNomes, usePermissao } from "@/componentes/hooks";
+import { useAbrirSeNovo, useAcao, useNomes, usePermissao } from "@/componentes/hooks";
 
 const STATUS: Record<StatusAgendamento, { texto: string; tom: Tom }> = {
   agendado: { texto: "Agendado", tom: "alerta" },
@@ -99,6 +99,7 @@ export default function Agenda() {
     ? sobreposicoes(estado.agendamentos, { id: f.dados.id ?? "", unidadeId: u, inicio: f.dados.inicio, duracaoMin: f.dados.duracaoMin })
     : [];
 
+  useAbrirSeNovo(() => novo(), editar && servicos.length > 0);
   return (
     <>
       <Cabecalho

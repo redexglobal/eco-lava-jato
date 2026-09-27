@@ -6,7 +6,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { executar as executarAcao, type Acao, type Resultado } from "./acoes.ts";
 import { criarEstadoDemo } from "./demo.ts";
 import { acessaUnidade } from "./regras.ts";
-import type { Estado, Membro, Sessao, Unidade } from "./tipos.ts";
+import type { Cliente, Estado, Membro, Sessao, Unidade } from "./tipos.ts";
 
 const CHAVE_DADOS = "eco-lava-jato:dados:v1";
 const CHAVE_SESSAO = "eco-lava-jato:sessao";
@@ -45,6 +45,12 @@ interface Contexto {
 
 const Ctx = createContext<Contexto | null>(null);
 
+// Estágios antigos do funil (antes de 27/09/2026) → funil do prompt mestre.
+const ESTAGIO_ANTIGO: Record<string, Cliente["estagio"]> = { lead: "novo", em_contato: "contatado", cliente: "convertido", inativo: "nao_prosseguir" };
+function migrarEstagios(e: Estado): Estado {
+  return { ...e, clientes: e.clientes.map((c) => (ESTAGIO_ANTIGO[c.estagio] ? { ...c, estagio: ESTAGIO_ANTIGO[c.estagio] } : c)) };
+}
+
 export function ProvedorDados({ children }: { children: React.ReactNode }) {
   const [carregado, setCarregado] = useState(false);
   const [estado, setEstado] = useState<Estado>(() => criarEstadoDemo());
@@ -55,7 +61,7 @@ export function ProvedorDados({ children }: { children: React.ReactNode }) {
     const salvo = ler<Estado>(CHAVE_DADOS);
     // Leitura única do armazenamento do navegador ao montar.
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (salvo?.versao === 1) setEstado(salvo);
+    if (salvo?.versao === 1) setEstado(migrarEstagios(salvo));
     setSessao(ler<Sessao>(CHAVE_SESSAO));
     const u = ler<string>(CHAVE_UNIDADE);
     if (u) setUnidadeId(u);

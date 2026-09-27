@@ -15,7 +15,7 @@ Cobrem `src/lib/regras.ts` e `src/lib/acoes.ts`:
 `npm run typecheck`, `npm run lint`, `npm run build` — todos sem erro na versão publicada.
 
 ## Roteiro manual (fazer no celular e no computador)
-1. Entrar como **Admin**: ver visão geral, trocar unidade no topo.
+1. Entrar como **Admin**: ver visão geral, trocar unidade no topo, usar cada ação rápida (deve abrir o formulário de criação).
 2. Clientes: criar um cliente fictício, marcar consentimento, registrar interação, exportar, excluir.
 3. Agenda: criar dois agendamentos no mesmo horário → aparece aviso de conflito.
 4. Abrir OS a partir do agendamento → em Operação, avançar etapas, marcar checklist, entregar.

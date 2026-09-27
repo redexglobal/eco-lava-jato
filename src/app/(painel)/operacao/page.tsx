@@ -6,7 +6,7 @@ import { centavosParaCampo, formatarReais, proximosStatus, reaisParaCentavos, ST
 import { dataHora } from "@/lib/formato";
 import type { Ordem, StatusOrdem } from "@/lib/tipos";
 import { AreaTexto, Botao, Cabecalho, Campo, Etiqueta, Modal, RodapeForm, Selecao, Vazio, useFormulario, useUi, type Tom } from "@/componentes/ui";
-import { useAcao, useNomes, usePermissao } from "@/componentes/hooks";
+import { useAbrirSeNovo, useAcao, useNomes, usePermissao } from "@/componentes/hooks";
 
 const TOM: Record<StatusOrdem, Tom> = { aguardando: "alerta", em_execucao: "marca", pronto: "folha", entregue: "neutro", cancelado: "neutro" };
 const ACAO_STATUS: Record<StatusOrdem, string> = { aguardando: "Voltar para fila", em_execucao: "Iniciar", pronto: "Marcar pronto", entregue: "Entregar", cancelado: "Cancelar" };
@@ -102,6 +102,7 @@ export default function Operacao() {
   const clientes = estado.clientes.filter((c) => c.unidadeId === u);
   const servicos = estado.servicos.filter((s) => s.unidadeId === u && (s.ativo || s.id === f.dados.servicoId));
 
+  useAbrirSeNovo(() => novo(), editar);
   return (
     <>
       <Cabecalho
