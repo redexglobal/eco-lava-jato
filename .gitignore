@@ -7,3 +7,6 @@ out
 next-env.d.ts
 .vercel
 .DS_Store
+*.pem
+*.key
+id_rsa
